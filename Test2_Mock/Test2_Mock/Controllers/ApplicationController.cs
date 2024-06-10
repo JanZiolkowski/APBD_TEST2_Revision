@@ -22,13 +22,13 @@ public class ApplicationController : ControllerBase
         
         return Ok(result);
     }
-
+    [HttpPost("/newreservation")]
     public async Task<IActionResult> NewReservation(ReservationDTO reservationDto)
     {
         
-        await _appService.AddReservation(reservationDto);
+        var idReservation = await _appService.AddReservation(reservationDto);
         
-        return Ok();    
+        return Ok(idReservation);    
     }
 
     [HttpGet("clients")]

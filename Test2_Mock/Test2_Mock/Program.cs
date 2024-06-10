@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAppService, AppService>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<ISailboatRepository, SailboatRepository>();
 //Adding the controllers
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DatabaseContext>(opt =>

@@ -1,4 +1,5 @@
-﻿using Test2_Mock.Entities;
+﻿using Test2_Mock.Context;
+using Test2_Mock.Entities;
 using Test2_Mock.Exceptions;
 using Test2_Mock.Model;
 using Test2_Mock.Repositories;
@@ -9,11 +10,17 @@ public class AppService : IAppService
 {
     private IClientRepository _clientRepository;
     private IReservationRepository _reservationRepository;
-
-    public AppService(IClientRepository clientRepository, IReservationRepository reservationRepository)
+    private ISailboatRepository _sailboatRepository;
+    //HERE I INCLUDE DATABASE CONTEXT BECAUSE I DONT KNOW HOW TO SEPARATE THE REPOSITORIES
+    private DatabaseContext _databaseContext;
+    
+    public AppService(IClientRepository clientRepository, IReservationRepository reservationRepository, ISailboatRepository sailboatRepository,DatabaseContext databaseContext)
     {
         _clientRepository = clientRepository;
         _reservationRepository = reservationRepository;
+        _sailboatRepository = sailboatRepository;
+        
+        _databaseContext = databaseContext;
     }
 
     public async Task<object> GetReservations(int idClient)
@@ -54,7 +61,7 @@ public class AppService : IAppService
         return returnObject;
     }
 
-    public async Task AddReservation(ReservationDTO reservationDto)
+    public async Task<int> AddReservation(ReservationDTO reservationDto)
     {
         //Here I will implement checks:
         var activeReservations =  await _reservationRepository.GetNumberOfCurrentReservations(reservationDto.IdClient);
@@ -63,7 +70,41 @@ public class AppService : IAppService
             throw new BadRequestException("The client has an reservation which is still active!");
         }
         
+        var Reservation = new Reservation()
+        {
+            IdClient = reservationDto.IdClient,
+            DateFrom = reservationDto.DateFrom,
+            DateTo = reservationDto.DateTo,
+            IdBoatStandard = reservationDto.IdBoatStandard,
+            NumOfBoats = reservationDto.NumOfBoats,
+            Fulfilled = false,
+            Capacity = 10
+        };
+
+        var listOfStandardSailboats = await _sailboatRepository.ReturnBoatsEqual(reservationDto);
+        var listOfHigherSailboats = await _sailboatRepository.ReturnBoatsHigherStandard(reservationDto);
         
+        if (listOfStandardSailboats.Count < reservationDto.NumOfBoats)
+        {
+            if (listOfStandardSailboats.Count + listOfHigherSailboats.Count >= reservationDto.NumOfBoats)
+            {
+                
+            }
+            else
+            {
+                Reservation.CancelReason = "There was not enough bots for the Reservation";
+                
+                await _databaseContext.Reservations.AddAsync(Reservation);
+                await _databaseContext.SaveChangesAsync();
+                throw new BadRequestException("Not enough available sailboats");
+                
+            }
+            
+        }
+        
+
+
+        return 0;
     }
 
     public ICollection<Client> GetClients()

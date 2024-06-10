@@ -22,4 +22,10 @@ public class ReservationRepository : IReservationRepository
     {
         return  await _databaseContext.Reservations.CountAsync(x => x.IdClient == idClient && x.DateTo > DateTime.Now);
     }
+
+    public async Task SaveReservation(Reservation reservation)
+    {
+        await _databaseContext.Reservations.AddAsync(reservation);
+        await _databaseContext.SaveChangesAsync();
+    }
 }
