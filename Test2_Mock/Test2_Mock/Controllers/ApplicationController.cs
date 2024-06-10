@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Test2_Mock.Model;
 using Test2_Mock.Services;
 
 namespace Test2_Mock.Controllers;
@@ -20,6 +21,14 @@ public class ApplicationController : ControllerBase
         var result = await _appService.GetReservations(idCustomer);
         
         return Ok(result);
+    }
+
+    public async Task<IActionResult> NewReservation(ReservationDTO reservationDto)
+    {
+        
+        await _appService.AddReservation(reservationDto);
+        
+        return Ok();    
     }
 
     [HttpGet("clients")]

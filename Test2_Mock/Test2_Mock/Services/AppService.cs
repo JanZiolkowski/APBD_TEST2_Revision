@@ -1,5 +1,6 @@
 ﻿using Test2_Mock.Entities;
 using Test2_Mock.Exceptions;
+using Test2_Mock.Model;
 using Test2_Mock.Repositories;
 
 namespace Test2_Mock.Services;
@@ -51,6 +52,18 @@ public class AppService : IAppService
         };
 
         return returnObject;
+    }
+
+    public async Task AddReservation(ReservationDTO reservationDto)
+    {
+        //Here I will implement checks:
+        var activeReservations =  await _reservationRepository.GetNumberOfCurrentReservations(reservationDto.IdClient);
+        if (activeReservations > 0)
+        {
+            throw new BadRequestException("The client has an reservation which is still active!");
+        }
+        
+        
     }
 
     public ICollection<Client> GetClients()

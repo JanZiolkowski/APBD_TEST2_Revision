@@ -17,4 +17,9 @@ public class ReservationRepository : IReservationRepository
     {
         return await _databaseContext.Reservations.Include(x => x.BoatStandard).Include(r => r.SailboatReservations).ThenInclude(sr => sr.Sailboat).Where(x => x.IdClient == idClient).OrderByDescending(x => x.DateTo).ToListAsync();
     }
+
+    public async Task<int> GetNumberOfCurrentReservations(int idClient)
+    {
+        return  await _databaseContext.Reservations.CountAsync(x => x.IdClient == idClient && x.DateTo > DateTime.Now);
+    }
 }
