@@ -12,8 +12,8 @@ using Test2_Mock.Context;
 namespace Test2_Mock.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240608183734_AddedSchema")]
-    partial class AddedSchema
+    [Migration("20240610070526_Schema")]
+    partial class Schema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace Test2_Mock.Migrations
 
                     b.HasKey("IdBoatStandard");
 
-                    b.ToTable("BoatStandard");
+                    b.ToTable("BoatStandard", (string)null);
                 });
 
             modelBuilder.Entity("Test2_Mock.Entities.Client", b =>
@@ -84,7 +84,7 @@ namespace Test2_Mock.Migrations
 
                     b.HasIndex("IdClientCategory");
 
-                    b.ToTable("Client");
+                    b.ToTable("Client", (string)null);
                 });
 
             modelBuilder.Entity("Test2_Mock.Entities.ClientCategory", b =>
@@ -105,7 +105,7 @@ namespace Test2_Mock.Migrations
 
                     b.HasKey("IdClientCategory");
 
-                    b.ToTable("ClientCategory");
+                    b.ToTable("ClientCategory", (string)null);
                 });
 
             modelBuilder.Entity("Test2_Mock.Entities.Reservation", b =>
@@ -150,7 +150,7 @@ namespace Test2_Mock.Migrations
 
                     b.HasIndex("IdClient");
 
-                    b.ToTable("Reservation");
+                    b.ToTable("Reservation", (string)null);
                 });
 
             modelBuilder.Entity("Test2_Mock.Entities.Sailboat", b =>
@@ -184,7 +184,7 @@ namespace Test2_Mock.Migrations
 
                     b.HasIndex("IdBoatStandard");
 
-                    b.ToTable("Sailboat");
+                    b.ToTable("Sailboat", (string)null);
                 });
 
             modelBuilder.Entity("Test2_Mock.Entities.SailboatReservation", b =>

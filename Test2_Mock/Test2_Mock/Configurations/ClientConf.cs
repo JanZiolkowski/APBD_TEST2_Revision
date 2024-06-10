@@ -8,6 +8,7 @@ public class ClientConf : IEntityTypeConfiguration<Client>
 {
     public void Configure(EntityTypeBuilder<Client> builder)
     {
+        builder.ToTable("Client");
         builder.HasKey(x => x.IdClient);
         builder.Property(x => x.IdClient).ValueGeneratedOnAdd().IsRequired();
         builder

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Test2_Mock.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedSchema : Migration
+    public partial class Schema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

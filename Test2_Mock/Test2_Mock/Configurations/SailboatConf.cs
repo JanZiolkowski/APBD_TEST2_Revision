@@ -8,7 +8,7 @@ public class SailboatConf : IEntityTypeConfiguration<Sailboat>
 {
     public void Configure(EntityTypeBuilder<Sailboat> builder)
     {
-        //builder.ToTable("Sailboat");
+        builder.ToTable("Sailboat");
         builder.HasKey(x => x.IdSailboat);
         builder
             .Property(x => x.IdSailboat)
