@@ -15,7 +15,8 @@ public class ClientRepository : IClientRepository
 
     public async Task<Client?> RetrieveClient(int idClient)
     {
-        return await _databaseContext.Clients.Where(x => x.IdClient == idClient).FirstOrDefaultAsync();
+        //I have to use Include to indicate what object to request additionaly from database
+        return await _databaseContext.Clients.Include(c => c.ClientCategory).Where(x => x.IdClient == idClient).FirstOrDefaultAsync();
     }
 
     public ICollection<Client> GetClients()

@@ -23,9 +23,9 @@ public class AppService : IAppService
         {
             throw new NotFoundException("The Client with given Id has not been found in database!");
         }
-
+        
         List<Reservation> reservations = await _reservationRepository.GetReservationOfClient(idClient);
-
+        
         var returnObject = new
         {
             Name = client.Name,
@@ -33,8 +33,21 @@ public class AppService : IAppService
             Birthday = client.Birthday,
             Pesel = client.Pesel,
             Email = client.Email,
-            ClientCategory = client.ClientCategory,
-            Reservations = reservations
+            ClientCategory = client.ClientCategory.Name,
+            Reservations = reservations.Select( r => new
+            {
+                IdReservation = r.IdReservation,
+                DateFrom = r.DateFrom,
+                DateTo = r.DateTo,
+                BoatStandard = r.BoatStandard.Name,
+                Capacity = r.Capacity,
+                NumberOfBoats = r.NumOfBoats,
+                Fulfilled = r.Fulfilled,
+                Price = r.Price,
+                CancelReason = r.CancelReason,
+                ListOfBoats = r.SailboatReservations.Select(x => x.Sailboat.Name)
+                //I can use here this Select statement because when I was retrieving data from the database I used Include and ThenInclude
+            })
         };
 
         return returnObject;

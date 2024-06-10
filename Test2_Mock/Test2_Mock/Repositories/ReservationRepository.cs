@@ -15,6 +15,6 @@ public class ReservationRepository : IReservationRepository
 
     public async Task<List<Reservation>> GetReservationOfClient(int idClient)
     {
-        return await _databaseContext.Reservations.Where(x => x.IdClient == idClient).OrderByDescending(x => x.DateTo).ToListAsync();
+        return await _databaseContext.Reservations.Include(x => x.BoatStandard).Include(r => r.SailboatReservations).ThenInclude(sr => sr.Sailboat).Where(x => x.IdClient == idClient).OrderByDescending(x => x.DateTo).ToListAsync();
     }
 }

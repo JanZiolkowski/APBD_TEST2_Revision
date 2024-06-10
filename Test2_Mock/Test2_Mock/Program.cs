@@ -29,7 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //Here I use error handling middleware
-//app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 //Mapping the controllers
